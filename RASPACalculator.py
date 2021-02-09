@@ -6,7 +6,7 @@ PList = [str(PLow)]
 while P < PHigh: #Pressure list is created for later use
     P += PInterval
     PList.append(str(round(P,1)))
-P=PLow
+P = PLow
 PString = str(PLow)
 while P < PHigh: #Pressure string is created for copy-pasting into RASPA2 input file
     P += PInterval
@@ -14,7 +14,17 @@ while P < PHigh: #Pressure string is created for copy-pasting into RASPA2 input 
     PString += str(round(P,1))
 print(PList)
 print(PString)
-
+CutLast = input('Sometimes the last value is an extra one, do you want to remove the last pressure value shown? (Y/N): ') #Sometimes the actual (down to the bit) value is just under the PHigh and so the while loop will repeat one more time than necessary, this input will give the user the option to kill the last value, if that is the case.
+if CutLast == 'Y':
+    PList.pop(-1) #Last value is taken out of list
+    PString = str(PLow) #The same PString creating code is placed down here with one exception, down 2 lines
+    P = PLow
+    while P < (PHigh - 10): # the - 10 is so that the code stops running one time early, 10 is somewhat arbitrary, it is big enough that the rounding and bit values will never make the actual (bit) value less than it, and it is small enough that it will never be too low for the pressure intervals we use.
+        P += PInterval
+        PString += ' '
+        PString += str(round(P,1))
+    print(PList)
+    print(PString)
 Continue = input('Do you want to use the above Pressure List to pull data from the DataPullingFolder? (Y/N): ')
 if Continue == 'Y': #Now we'll make list for filenames for each pressure output file
     print('Filenames will look like "output_title_1.1.1_000000_pressure.data"')
